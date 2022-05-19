@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib import messages
 
 from base.models import Task
 from .models import Task
@@ -67,7 +68,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title', 'description', 'complete']
+    fields = ['title', 'description', 'complete', 'deadline']
     success_url = reverse_lazy('tasks')
 
     def form_valid(self, form):
@@ -77,8 +78,12 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ['title', 'description', 'complete']
+    fields = ['title', 'description', 'complete', 'deadline']
     success_url = reverse_lazy('tasks')
+
+    def PopUp(self, request):
+        if Task.deadline:
+            messages.info("You have reached your deadline")
 
 
 class DeleteView(LoginRequiredMixin, DeleteView):

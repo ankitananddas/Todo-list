@@ -44,7 +44,7 @@
                 </div>
                 <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a>
             {% else %}
-            <div id="deadline" class="task-title"><h5>Deadline</h5> {{task.deadline}}</div>
+            <div id="deadline" class="task-title">Deadline {{task.deadline|date:"M d, Y H:m:s"}}</div>
             <div class="task-title">
                 <div class="task-incomplete-icon"></div>
                 <a href="{% url 'task-update' task.id %}">{{task}}</a>

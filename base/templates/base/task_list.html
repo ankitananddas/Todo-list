@@ -1,8 +1,14 @@
 {% extends 'base/main.html' %}
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'base/main.js' %}" defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock scripts %}
+
+
+
 {% block content %}
-
-
-
 <div class="header-bar">
     <div>
         <h1>Hello {{request.user|title}}</h1>
@@ -13,12 +19,13 @@
     {% else %}
     <a href="{% url 'login' %}">Login</a>
     {% endif %}
+
 </div>
 
-<div class="search-add-wrapper">
+<div id="search-add-wrapper">
 <form method="GET" style="margin-top: 20px;display:flex;">
     <input type="text" name="search-area" id="" value="{{search_input}}">
-    <input type="submit" value="Search">
+    <input class="button" type="submit" value="Search">
 
 </form>
 <a id="add-link" href="{% url 'task-create' %}">&#x2b</a>
@@ -37,6 +44,7 @@
                 </div>
                 <a class="delete-link" href="{% url 'task-delete' task.id%}">&#215;</a>
             {% else %}
+            <div id="deadline" class="task-title"><h5>Deadline</h5> {{task.deadline}}</div>
             <div class="task-title">
                 <div class="task-incomplete-icon"></div>
                 <a href="{% url 'task-update' task.id %}">{{task}}</a>

@@ -10,6 +10,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib import messages
 
+import datetime
+
 from base.models import Task
 from .models import Task
 # Create your views here.
@@ -50,6 +52,7 @@ class Tasklist(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
+        context['endtime'] = context['tasks'].filter(endtime=False)
 
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
@@ -80,10 +83,6 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'description', 'complete', 'deadline']
     success_url = reverse_lazy('tasks')
-
-    def PopUp(self, request):
-        if Task.deadline:
-            messages.info("You have reached your deadline")
 
 
 class DeleteView(LoginRequiredMixin, DeleteView):
